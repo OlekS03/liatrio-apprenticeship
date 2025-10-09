@@ -1,34 +1,48 @@
-name: Build and Push Docker Image
+name: Go CI/CD Pipeline
 
-# This workflow runs on any push to the main branch
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest # Use a standard Linux version
-
+  # Run tests on the application
+  test:
+    runs-on: ubuntu-latest
     steps:
-      # Check out code from the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24.6'
+
+      - name: Build Go Application
+        run: go build -o myapp .
+
+      - name: Run Apprentice Action Tests
+        uses: liatrio/github-actions/apprentice-action@master
+        with:
+          pre-test-command: './myapp &'
+
+  # Build and Push Docker image after tests pass
+  build-and-push:
+    # This job will only run if the 'test' job is successful
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Log in to Docker Hub using secrets
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build and push the Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-repo-name:${{ github.sha }}
-
-      # Verify the application functionality
-      - name: Verify application functionality
-        uses: liatrio/github-actions/apprentice-action@master
