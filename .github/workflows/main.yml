@@ -31,4 +31,4 @@ jobs:
 
       # Verify the application functionality
       - name: Verify application functionality
-        uses: Liatrio/github_apprentice-action@v1
+        uses: liatrio/github-actions/apprentice-action@master
