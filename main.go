@@ -1,11 +1,9 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"os"
 	"time"
-
+	"os"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,19 +11,14 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		response := map[string]interface{}{
-			"message":   "My name is Olexander Shestopalov",
-			"timestamp": time.Now().UnixMilli(),
-		}
-
-		// Marshal to minified JSON (no spaces or newlines)
-		minifiedJSON, err := json.Marshal(response)
-		if err != nil {
-			return c.Status(500).SendString(`{"error":"failed to encode JSON"}`)
-		}
+		// Minified JSON string (no spaces/newlines)
+		response := fmt.Sprintf(
+			`{"message":"My name is Olexander Shestopalov","timestamp":%d}`,
+			time.Now().UnixMilli(),
+		)
 
 		c.Set("Content-Type", "application/json")
-		return c.Send(minifiedJSON)
+		return c.SendString(response)
 	})
 
 	port := os.Getenv("PORT")
