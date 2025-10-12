@@ -2,22 +2,29 @@ package main
 
 import (
 	"time"
+	"os"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
 	app := fiber.New()
 
-
-	// When someone accesses http://<host>:1024/, this function runs.
+	// Define the GET endpoint for "/"
 	app.Get("/", func(c *fiber.Ctx) error {
 		response := map[string]interface{}{
 			"message":   "My name is Olexander Shestopalov",
 			"timestamp": time.Now().Unix(),
 		}
-		return c.JSON(response)// Return the response as a JSON object to the client.
+		return c.JSON(response)
 	})
 
-	app.Listen(":8080")
-}
+	// Get the PORT environment variable (Cloud Run sets this automatically)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default for local dev
+	}
 
+	fmt.Println("Server listening on port:", port)
+	app.Listen(":" + port)
+}
