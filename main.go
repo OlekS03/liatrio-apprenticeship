@@ -14,8 +14,9 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		response := map[string]interface{}{
 			"message":   "My name is Olexander Shestopalov",
-			"timestamp": time.Now().Unix(),
+			"timestamp": time.Now().UnixMilli(),
 		}
+		// Return minified JSON
 		return c.JSON(response)
 	})
 
