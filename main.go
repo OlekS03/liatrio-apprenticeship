@@ -11,16 +11,15 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
-	response := fmt.Sprintf(
-		`{"message":"My name is Olexander Shestopalov","timestamp":%d}`,
-		time.Now().UnixMilli(),
-	)
+		// Minified JSON string (no spaces/newlines)
+		response := fmt.Sprintf(
+			`{"message":"My name is Olexander Shestopalov","timestamp":%d}`,
+			time.Now().UnixMilli(),
+		)
 
-	c.Response().Header.SetContentType("application/json; charset=utf-8")
-	c.Response().SetBodyRaw([]byte(response))
-	return nil
-})
-
+		c.Set("Content-Type", "application/json")
+		return c.SendString(response)
+	})
 
 	port := os.Getenv("PORT")
 	if port == "" {
