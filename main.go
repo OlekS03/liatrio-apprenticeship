@@ -17,7 +17,7 @@ func main() {
 			"timestamp": time.Now().UnixMilli(),
 		}
 		// Return minified JSON
-		return c.JSONCompact(response)
+		return c.JSON(response)
 	})
 
 	// Get the PORT environment variable (Cloud Run sets this automatically)
