@@ -14,7 +14,8 @@ func main() {
 		// Minified JSON string (no spaces/newlines)
 		response := fmt.Sprintf(
 			`{"message":"My name is Olexander Shestopalov","timestamp":%d}`,
-			time.Now().UnixMilli(),
+			time.Now().Unix(),
+			//time.Now().UnixMilli(),
 		)
 
 		c.Set("Content-Type", "application/json")
