@@ -10,15 +10,17 @@ import (
 func main() {
 	app := fiber.New()
 
+	// Define the GET endpoint for "/"
 	app.Get("/", func(c *fiber.Ctx) error {
-		message := "My name is Olexander Shestopalov"
-		timestamp := time.Now().UnixMilli()
-
-		jsonResponse := fmt.Sprintf(`{"message":"%s","timestamp":%d}`, message, timestamp)
-		c.Set("Content-Type", "application/json")
-		return c.Send([]byte(jsonResponse))
+		response := map[string]interface{}{
+			"message":   "My name is Olexander Shestopalov",
+			"timestamp": time.Now().UnixMilli(),
+		}
+		// Return minified JSON
+		return c.JSONCompact(response)
 	})
 
+	// Get the PORT environment variable (Cloud Run sets this automatically)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "80" // Default for local dev
