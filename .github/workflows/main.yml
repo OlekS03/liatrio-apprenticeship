@@ -1,34 +1,48 @@
-name: Build and Push Docker Image
+name: Build, Run, and Test Docker Image
 
-# This workflow runs on any push to the main branch
+env:
+  PORT: 80
+
 on:
   push:
     branches: [ "main" ]
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest # Use a standard Linux version
+    runs-on: ubuntu-latest
 
     steps:
-      # Check out code from the repository
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Log in to Docker Hub using secrets
+      # Login to Docker Hub (optional — only needed if pushing)
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build and push the Docker image
-      - name: Build and push Docker image
+      # Build Docker image
+      - name: Build Docker image
+        run: docker build -t liatrio_app .
+
+      # Run the app container in background on port 80
+      - name: Run Docker container
+        run: docker run -d -p 80:80 liatrio_app
+
+      # Wait a few seconds for the app to start
+      - name: Wait for server to start
+        run: sleep 5
+
+      # Run the Liatrio test suite
+      - name: Run tests
+        uses: liatrio/github-actions/apprentice-action@master
+
+      # Push Docker image (optional)
+      - name: Push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/liatrio_app:${{ github.sha }}
-
-      # Verify the application functionality
-      - name: run tests
-        uses: liatrio/github-actions/apprentice-action@master
