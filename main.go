@@ -22,7 +22,7 @@ func main() {
 	// Get the PORT environment variable (Cloud Run sets this automatically)
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // Default for local dev
+		port = "80" // Default for local dev
 	}
 
 	fmt.Println("Server listening on port:", port)
