@@ -16,7 +16,7 @@ func main() {
 
 		jsonResponse := fmt.Sprintf(`{"message":"%s","timestamp":%d}`, message, timestamp)
 		c.Set("Content-Type", "application/json")
-		return c.SendString(jsonResponse)
+		return c.Send([]byte(jsonResponse))
 	})
 
 	port := os.Getenv("PORT")
