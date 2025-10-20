@@ -37,7 +37,7 @@ jobs:
 
       # Run the Liatrio test suite
       - name: Run tests
-        uses: liatrio/github-actions/apprentice-action@master
+        uses: liatrio/github-actions/apprentice-action@v1.0.0
 
       # Push Docker image (optional)
       - name: Push Docker image
