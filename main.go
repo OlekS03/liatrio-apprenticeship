@@ -13,7 +13,7 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		// Minified JSON string (no spaces/newlines)
 		response := fmt.Sprintf(
-			`{"message":"My name is Olexander Shestopalov","timestamp":%d}`,
+			`{"message":"My name is Oleksandr Shestopalov","timestamp":%d}`,
 			time.Now().UnixMilli(),
 		)
 
