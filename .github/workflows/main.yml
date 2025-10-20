@@ -8,7 +8,7 @@ env:
 
 on:
   push:
-    branches: [ "main" ]       # Runs only on pushes to 'test' branch
+    branches: [ "main" ]
 
 jobs:
   build-test-deploy:
