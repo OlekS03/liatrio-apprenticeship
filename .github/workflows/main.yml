@@ -1,18 +1,18 @@
 name: Build, Test, and Deploy Docker Image to Cloud Run
 
 env:
-  PORT: 80
-  REGION: us-central1          # Change if you deployed Cloud Run elsewhere
-  SERVICE_NAME: liatrio-app    # Your Cloud Run service name
-  IMAGE_NAME: liatrio_app
+  PORT: 80 # The port your app listens on
+  REGION: us-central1 # Cloud Run deployment region
+  SERVICE_NAME: liatrio-app # Cloud Run service name
+  IMAGE_NAME: liatrio_app # Docker image name 
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ] # Run this workflow whenever code is pushed to main
 
 jobs:
   build-test-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Runs on the latest Ubuntu runner
 
     steps:
       # Checkout code
